@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="container">
+        <h1>Welcome To Spam Detector!</h1>
+        <h2 id="result"></h2>
+        <textarea id="input" name="input"></textarea>
+    </div>
+    <script>
+        let inputField = document.getElementById("input")
+        let resultTag = document.getElementById("result")
+        inputField.addEventListener("keyup", function() {
+                var inputValue = inputField.value;
+                
+                fetch('/spam', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({input: inputValue})
+                }).then(
+                    response => {
+                            return response.json()
+                    }
+                ).then(
+                    data => {
+                        console.log(data)
+                        document.getElementById("result").innerHTML = data['result']
+                    }
+                ).catch(
+                    error => {
+                        document.getElementById("result").innerHTML = `<a id="clickhere" href="http://127.0.0.1:2604/">Run python starter.py and click here</a>`
+                    }
+                )
+        }
+    )
+    </script>
+</body>
+</html>
