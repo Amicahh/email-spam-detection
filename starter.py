@@ -6,8 +6,13 @@ def process_email(text):
     text = text.lower()
     return list(numpy.unique(text.split()))
 
-def predict_naive_bayes(word):
-    pass
+def predict_naive_bayes(emails, word):
+    posterior = calculate_posterior(emails, word)
+    if posterior >= 0.5:
+        return "Spam!", True
+    else:
+        return "Not Spam!", False
+
 
 
 def calculate_priors(emails):
