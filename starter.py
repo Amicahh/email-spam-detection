@@ -53,3 +53,25 @@ def calculate_posterior(emails, given_words):
     
 
 emails["words"] = emails["text"].apply(process_email)
+
+from flask import Flask, request, jsonify
+app = Flask(__name__)
+@app.route('/')
+def index():
+    return open('index.html').read()
+
+@app.route('/spam', methods=['POST'])
+def spam_check():
+    input = request.json.get('input')
+    print("Input: ", input)
+    if input:
+        result, spam = predict_naive_bayes(emails, process_email(input))
+        print("Result: ", result )
+        if spam:
+          return jsonify({'result': result}), 400 
+        return jsonify({'result': result}), 200
+    else:
+        return jsonify({'result': "Type something..."})
+
+if __name__ == "__main__":
+    app.run(port=2604)
