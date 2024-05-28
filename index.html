@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Spam Detector</title>
     <style>
         #input {
             padding: 8px 16px;
@@ -78,7 +78,7 @@
         let inputField = document.getElementById("input")
         let resultTag = document.getElementById("result")
         let loader = document.getElementById("loader")
-        inputField.addEventListener("keyup", function() {
+        let checkSpam = function() {
                 var inputValue = inputField.value;
                 loader.style.display = 'block'
                 resultTag.style.display = 'none'
@@ -124,7 +124,22 @@
                     }
                 )
         }
-    )
+    
+            
+    let debounce = (fn, delay) => { 
+        let timerId = null; 
+        return () => { 
+            clearTimeout(timerId); 
+            timerId = setTimeout(fn, delay); 
+        }; 
+    }; 
+    
+    let onInput = debounce(checkSpam, 300); 
+    
+    inputField.addEventListener("input", (e) => { 
+        onInput(); 
+    });
+        
     </script>
 </body>
 </html>
